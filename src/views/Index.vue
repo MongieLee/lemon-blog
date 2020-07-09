@@ -5,18 +5,23 @@
 </template>
 
 <script>
-import request  from "../helpers/request";
+import auth from "@/api/auth";
 export default {
   data() {
     return {};
   },
   created() {
-    request("/auth/login", "post", {
-      username: "hunger1",
-      password: 123458
-    }).then(data => {
+    this.test({userId:0})
+    auth.getInfo().then(data => {
       console.log(data);
     });
+  },
+  methods: {
+    test({ page = 1, userId, atIndex } = { page: 2 }) {
+      console.log(page)
+      console.log(userId)
+      console.log(atIndex)
+    }
   }
 };
 </script>

@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { Message} from 'element-ui'
-console.log()
 axios.defaults.headers.post['Content-Type'] = 'appliction/x-www-form-urlencoded'
 axios.defaults.baseURL = 'http://blog-server.hunger-valley.com'
-axios.defaults.withCredentials  = true //处理跨域
-
+axios.defaults.withCredentials  = true //处理跨域cookies
+console.dir(axios)
 export default function request(url,type='GET',data={}){
     return new Promise((resolve,reject)=>{
         let option = {
             url,
             method:type
         }
+        console.log(type)
         if(type.toLowerCase() === 'get'){
             option.parmas = data
         }else{
