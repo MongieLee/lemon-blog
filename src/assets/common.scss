@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  color: #333;
+  font: 14px/1.6 Arial, 'Microsoft YaHei', '宋体', '黑体', sans-serif;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#app .el-button {
+  font-size: 13px;
+  color: #006600;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 4px;
+  font-weight: normal;
+}
