@@ -1,20 +1,18 @@
 <template>
   <div>
-    <div class="index">
-      <section class="blog-list">
-        <div class="blog-item">
-          <figure>
-            <img src="@/assets/logo.png" alt="这是头像" />
-            <figcaption>Lemon</figcaption>
-          </figure>
-          <h3>
-            前端异步大揭秘
-            <span>3天前</span>
-          </h3>
-          <p>本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的 callback、ES2016中的Promise和Generator、 Node 用于解决回调的co 模块、ES2017中的async/await。适合初步接触 Node.js以及少量 ES6语法的同学阅读...</p>
-        </div>
-      </section>
-    </div>
+    <section class="blog-list">
+      <div class="blog-item">
+        <figure>
+          <img src="@/assets/logo.png" alt="这是头像" />
+          <figcaption>Lemon</figcaption>
+        </figure>
+        <h3>
+          前端异步大揭秘
+          <span>3天前</span>
+        </h3>
+        <p>本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的 callback、ES2016中的Promise和Generator、 Node 用于解决回调的co 模块、ES2017中的async/await。适合初步接触 Node.js以及少量 ES6语法的同学阅读...</p>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -44,7 +42,7 @@ export default {
 @import "@/assets/base.scss";
 .blog-item {
   display: grid;
-  grid: auto auto / 80px 1fr;
+  grid: auto auto / 100px 1fr;
   margin-top: 20px;
   margin-bottom: 20px;
   figure {
