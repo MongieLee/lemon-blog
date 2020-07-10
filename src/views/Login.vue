@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="login-container">
+    <section class="login-container">
       <p>用户名</p>
       <el-input v-model="userName" type="text" placeholder="用户名"></el-input>
       <p>密码</p>
@@ -8,9 +8,9 @@
       <el-button size="small ">立即登录</el-button>
       <p class="tips">
         没有账号？
-        <a href="/register">立即注册</a>
+        <router-link to="/register">立即注册</router-link>
       </p>
-    </div>
+    </section>
   </div>
 </template>
 

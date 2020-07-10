@@ -31,7 +31,6 @@ export default {
   grid-area: header;
   padding-left: 12%;
   padding-right: 12%;
-  padding-bottom: 30px;
 }
 
 #main {
