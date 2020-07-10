@@ -18,11 +18,6 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/common.scss";
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 #app {
   color: #2c3e50;

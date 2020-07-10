@@ -4,8 +4,12 @@
       <h1>Let's share!</h1>
       <p>精品博客汇聚</p>
       <div class="btns">
-        <el-button>立即登录</el-button>
-        <el-button>点击注册</el-button>
+        <router-link to="/login">
+            <el-button>立即登录</el-button>
+        </router-link>
+        <router-link to="/register">
+            <el-button>点击注册</el-button>
+        </router-link>
       </div>
     </template>
     <template v-else>
@@ -64,5 +68,9 @@ header.un-login {
     border-radius: 50%;
     margin-left: 15px;
   }
+}
+
+::v-deep .el-button {
+  color: #006600;
 }
 </style>
