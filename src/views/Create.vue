@@ -25,12 +25,13 @@
         <label>是否展示到首页</label>
         <el-switch v-model="showIndex" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </span>
-      <el-button>确定</el-button>
+      <el-button @click="onCreate">确定</el-button>
     </section>
   </div>
 </template>
 
 <script>
+import blog from "@/api/blog.js";
 export default {
   data() {
     return {
@@ -40,7 +41,24 @@ export default {
       showIndex: false
     };
   },
-
+  methods: {
+    onCreate() {
+      blog
+        .createBlog({
+          title: this.articleTitle,
+          content: this.articleContent,
+          description: this.articleIntro,
+          atIndex: this.showIndex
+        })
+        .then((response) => {
+          this.$message({
+            type: "success",
+            message: "创建成功!"
+          });
+          this.$router.push({path:`/detail/${response.data.id}`})
+        });
+    }
+  }
 };
 </script>
 
