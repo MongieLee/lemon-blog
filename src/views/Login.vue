@@ -4,7 +4,7 @@
       <p>用户名</p>
       <el-input v-model="username" type="text" placeholder="用户名"></el-input>
       <p>密码</p>
-      <el-input show-password v-model="password" placeholder="密码"></el-input>
+      <el-input show-password v-model="password" @keyup.enter.native="onLogin" placeholder="密码"></el-input>
       <el-button size="small" @click="onLogin">立即登录</el-button>
       <p class="tips">
         没有账号？
@@ -28,7 +28,8 @@ export default {
     onLogin() {
       this.login({ username: this.username, password: this.password }).then(
         () => {
-          this.$router.push({ path: "/" });
+          console.log(this.$route.query.redirect);
+          this.$router.push({ path: this.$route.query.redirect || "/" });
         }
       );
     }

@@ -4,7 +4,7 @@
       <p>用户名</p>
       <el-input v-model="username" type="text" placeholder="用户名"></el-input>
       <p>密码</p>
-      <el-input v-model="password" type="password" @keyup.enter="onRegister" placeholder="密码"></el-input>
+      <el-input v-model="password" type="password" @keyup.enter.native="onRegister" placeholder="密码"></el-input>
       <el-button size="small" @click="onRegister">立即注册</el-button>
       <p class="tips">
         没有账号？
