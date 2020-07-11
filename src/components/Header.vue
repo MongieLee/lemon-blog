@@ -1,12 +1,12 @@
 <template>
-  <header :class="{login:isLogin,'un-login':!isLogin}">
+  <header :class="{login:isLogin,'un-login':!isLogin,isCheck:isCheck}">
     <template v-if="isLogin">
       <h1 @click="toIndex">Let's share!</h1>
       <div class="actions">
         <i @click="create" class="el-icon-plus edit"></i>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link pull-down-container">
-            <img class="avatar" src="@/assets/logo.png" alt />
+            <img class="avatar" :src="user.avatar" alt />
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user" command="my">我的</el-dropdown-item>
@@ -31,16 +31,28 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      isLogin: true
+      isCheck: true
     };
   },
+  computed: {
+    ...mapGetters(["user", "isLogin"])
+  },
+  created() {
+    this.checkLogin().then(() => {
+      this.isCheck = false;
+    });
+  },
   methods: {
+    ...mapActions(["checkLogin", "logout"]),
     handleCommand(command) {
       if (command === "logout") {
-        this.$router.push("/");
+        this.logout().then(() => {
+          this.$router.push({ path: "/" });
+        });
       }
       if (command === "my") {
         this.$router.push("/my");
@@ -58,7 +70,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/base.scss";
-
+header.isCheck {
+  visibility: hidden;
+}
 header.un-login {
   background-color: $bgColor;
   display: grid;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="create-container">
+    <section class="edit-container">
       <h1>编辑文章</h1>
       <h2>文章标题</h2>
       <el-input placeholder="文章标题" v-model="articleTitle"></el-input>
@@ -44,14 +44,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.create-container {
+.edit-container {
+  padding-bottom: 20px;
   h1 {
     margin: 20px 0;
     font-size: 2em;
     text-align: center;
   }
   h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   p {
     text-align: right;

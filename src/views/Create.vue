@@ -39,19 +39,21 @@ export default {
       articleContent: "",
       showIndex: false
     };
-  }
+  },
+
 };
 </script>
 
 <style lang="scss" scoped>
 .create-container {
+  padding-bottom: 20px;
   h1 {
     margin: 20px 0;
     font-size: 2em;
     text-align: center;
   }
   h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   p {
     text-align: right;

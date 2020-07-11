@@ -2,10 +2,10 @@
   <div>
     <section class="login-container">
       <p>用户名</p>
-      <el-input v-model="userName" type="text" placeholder="用户名"></el-input>
+      <el-input v-model="username" type="text" placeholder="用户名"></el-input>
       <p>密码</p>
       <el-input show-password v-model="password" placeholder="密码"></el-input>
-      <el-button size="small ">立即登录</el-button>
+      <el-button size="small" @click="onLogin">立即登录</el-button>
       <p class="tips">
         没有账号？
         <router-link to="/register">立即注册</router-link>
@@ -15,12 +15,23 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      userName: "",
+      username: "",
       password: ""
     };
+  },
+  methods: {
+    ...mapActions(["login"]),
+    onLogin() {
+      this.login({ username: this.username, password: this.password }).then(
+        () => {
+          this.$router.push({ path: "/" });
+        }
+      );
+    }
   }
 };
 </script>
