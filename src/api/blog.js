@@ -14,6 +14,8 @@ export default {
   },
 
   getIndexBlogs({ page=1 } = { page: 1}) {
+    console.log(page)
+    console.log(`blog的page`)
     return this.getBlogs({ page, atIndex: true })
   },
 
