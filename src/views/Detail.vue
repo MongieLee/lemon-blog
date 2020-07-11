@@ -1,20 +1,46 @@
 <template>
   <div>
     <section class="user-info">
-      <img src="@/assets/logo.png" alt="这是头像" />
-      <h3>前端异步大揭秘</h3>
+      <img :src="user.avatar" :alt="user.username" />
+      <h3>{{title}}</h3>
       <p>
-        <a href="#">用户名</a>发布于好多天前
+        <router-link :to="`/user/${user.id}`">{{user.username}}</router-link>
+        发布于{{createdAt}}
       </p>
     </section>
-    <section class="content">
-      <p>css很简单的</p>
-    </section>
+    <section class="content" v-html="markdown">{{markdown}}</section>
   </div>
 </template>
 
 <script>
-export default {};
+import marked from "marked";
+import blog from "@/api/blog.js";
+let { log } = console;
+export default {
+  data() {
+    return {
+      user: {},
+      title: "",
+      createdAt: "",
+      content: ""
+    };
+  },
+  created() {
+    const blogId = this.$route.params.blogId;
+    blog.getDetail({ blogId }).then(({ data }) => {
+      this.title = data.title;
+      this.createdAt = data.createdAt;
+      this.user = data.user;
+      this.content = data.content;
+      log(data);
+    });
+  },
+  computed: {
+    markdown() {
+      return marked(this.content);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
