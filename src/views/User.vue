@@ -1,29 +1,78 @@
 <template>
   <div>
     <section class="user-info">
-      <img src="@/assets/logo.png" alt="这是头像" />
-      <h3>Limengjie</h3>
+      <img :src="user.avatar" alt="这是头像" />
+      <h3>{{user.username}}</h3>
     </section>
     <section class="content">
-      <router-link to="#" class="content-item">
+      <router-link
+        v-for="(blog,index) in blogs"
+        :key="index"
+        :to="`/detail/${blog.id}`"
+        class="content-item"
+      >
         <div class="date">
-          <span class="year">20</span>
-          <span class="month">10月</span>
-          <span class="day">21日</span>
+          <span class="day">{{splitDate(blog.createdAt).date}}</span>
+          <span class="month">{{splitDate(blog.createdAt).month}}月</span>
+          <span class="year">{{splitDate(blog.createdAt).year}}</span>
         </div>
-        <h3>浅谈ES5</h3>
+        <h3>{{blog.title}}</h3>
+        <p>{{blog.description}}</p>
       </router-link>
     </section>
     <section class="pagination-container">
-      <el-pagination layout="prev, pager, next" :total="1"></el-pagination>
+      <el-pagination
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="total"
+      ></el-pagination>
     </section>
   </div>
 </template>
 
 <script>
+import blog from "@/api/blog.js";
 export default {
+  data() {
+    return {
+      blogs: [],
+      user: {},
+      page: 1,
+      total: 1,
+      userId: null
+    };
+  },
+  created() {
+    this.userId = this.$route.params.userId;
+    this.page = parseInt(this.$route.query.page) || 1;
+    blog.getBlogsByUserId(this.userId, { page: this.page }).then(response => {
+      this.blogs = response.data;
+      this.page = response.page;
+      this.total = response.total;
+      response.data.length > 0 && (this.user = response.data[0].user);
+    });
+  },
   methods: {
-    
+    handleCurrentChange(newPage) {
+      blog.getBlogsByUserId(this.userId, { page: newPage }).then(response => {
+        this.blogs = response.data;
+        this.page = response.page;
+        this.total = response.total;
+        this.$router.push({
+          path: `/user/${this.userId}`,
+          query: { page: newPage }
+        });
+      });
+    },
+    splitDate(dateStr) {
+      let dateObj = typeof dateStr === "object" ? dateStr : new Date(dateStr);
+      return {
+        date: dateObj.getDate(),
+        month: dateObj.getMonth() + 1,
+        year: dateObj.getFullYear()
+      };
+    }
   }
 };
 </script>
@@ -59,6 +108,7 @@ export default {
     grid: auto auto auto/80px 1fr;
     h3 {
       margin-top: 15px;
+      margin-bottom: 15px;
     }
     .date {
       grid-row: 1 / span 3;
@@ -68,19 +118,13 @@ export default {
         display: block;
         color: $textLighterColor;
       }
-      .year {
+      .day {
         font-size: 40px;
       }
     }
-    .actions {
-      grid-row: 3;
+    p {
+      grid-row: 2;
       grid-column: 2;
-      span {
-        color: $themeLighterColor;
-      }
-      .delete {
-        margin-left: 20px;
-      }
     }
   }
 }

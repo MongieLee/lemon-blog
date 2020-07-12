@@ -38,7 +38,6 @@ export default {
   },
   created() {
     this.page = parseInt(this.$route.query.page) || 1;
-    console.log(this.page);
     blog.getIndexBlogs({ page: this.page }).then(res => {
       this.blogs = res.data;
       this.total = res.total;
@@ -48,7 +47,6 @@ export default {
   },
   methods: {
     handleCurrentChange(toPage) {
-      console.log(`我的要跳转到到椰树`, toPage);
       blog.getIndexBlogs({ page: toPage }).then(res => {
         this.blogs = res.data;
         this.total = res.total;
