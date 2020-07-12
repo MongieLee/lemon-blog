@@ -50,12 +50,12 @@ export default {
           description: this.articleIntro,
           atIndex: this.showIndex
         })
-        .then((response) => {
+        .then(response => {
           this.$message({
             type: "success",
             message: "创建成功!"
           });
-          this.$router.push({path:`/detail/${response.data.id}`})
+          this.$router.push({ path: `/detail/${response.data.id}` });
         });
     }
   }

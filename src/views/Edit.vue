@@ -25,13 +25,26 @@
         <label>是否展示到首页</label>
         <el-switch v-model="showIndex" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </span>
-      <el-button>确定</el-button>
+      <el-button @click="onUpdate">确定</el-button>
     </section>
   </div>
 </template>
 
 <script>
+import blog from "@/api/blog.js";
 export default {
+  created() {
+    let blogId = this.$route.params.blogId;
+    this.blogId = blogId;
+    console.log(blogId);
+    blog.getDetail({ blogId }).then(({ data }) => {
+      console.log(data);
+      this.articleTitle = data.title;
+      this.showIndex = data.atIndex;
+      this.articleIntro = data.description;
+      this.articleContent = data.content;
+    });
+  },
   data() {
     return {
       articleTitle: "",
@@ -39,6 +52,28 @@ export default {
       articleContent: "",
       showIndex: false
     };
+  },
+  methods: {
+    onUpdate() {
+      blog
+        .updateBlog(
+          { blogId: this.blogId },
+          {
+            title: this.articleTitle,
+            content: this.articleContent,
+            description: this.articleIntro,
+            atIndex: this.showIndex
+          }
+        )
+        .then(response => {
+          console.log(response);
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
+          this.$router.push({ path: `/detail/${response.data.id}` });
+        });
+    }
   }
 };
 </script>
