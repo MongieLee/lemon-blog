@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>Mongielee@outlook.com</p>
+    <p>le30n@outlook.com</p>
   </footer>
 </template>
 
@@ -15,8 +15,8 @@ footer {
   font-size: 13px;
   padding: 10px;
   text-align: center;
-  p{
-    margin:13px 0;
+  p {
+    margin: 13px 0;
   }
 }
 </style>

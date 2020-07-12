@@ -1,31 +1,40 @@
 <template>
   <div>
     <section class="user-info">
-      <img src="@/assets/logo.png" alt="这是头像" />
+      <img :src="user.avatar" alt="这是头像" />
       <h3>Limengjie</h3>
     </section>
     <section class="content">
-      <router-link to="#" class="content-item">
+      <router-link v-for="(blog,index) of blogs" :key="index" :to="`/detail/${blog.id}`" class="content-item">
         <div class="date">
-          <span class="year">20</span>
-          <span class="month">10月</span>
-          <span class="day">21日</span>
+          <span class="day">{{splitDate(blog.createdAt).date}}</span>
+          <span class="month">{{splitDate(blog.createdAt).month}}月</span>
+          <span class="year">{{splitDate(blog.createdAt).year}}</span>
         </div>
-        <h3>浅谈ES5</h3>
+        <h3>{{blog.title}}</h3>
+        <p>{{blog.description}}</p>
         <div class="actions">
-          <span @click="editHandle">编辑</span>
-          <span @click="deleteHandle" class="delete">删除</span>
+          <span>
+            <router-link :to="`/edit/${blog.id}`">编辑</router-link>
+          </span>
+          <span @click.prevent="deleteHandle(blog.id)" class="delete">删除</span>
         </div>
       </router-link>
     </section>
     <section class="pagination-container">
-      <el-pagination layout="prev, pager, next" :total="1"></el-pagination>
+      <el-pagination
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :current-page="page"
+        :total="total"
+      ></el-pagination>
     </section>
   </div>
 </template>
 
 <script>
 import blog from "@/api/blog";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -34,30 +43,56 @@ export default {
       page: 1
     };
   },
-  create() {
+  created() {
+    this.getData();
   },
+  computed: {
+    ...mapGetters(["user"])
+  },
+  create() {},
   methods: {
-    deleteHandle() {
+    getData() {
+      this.page = parseInt(this.$route.query.page) || 1;
+      blog.getBlogsByUserId(this.user.id, { page: this.page }).then(resonse => {
+        this.blogs = resonse.data;
+        this.total = resonse.total;
+        this.page = resonse.page;
+      });
+    },
+    splitDate(dateStr) {
+      let dateObj = typeof dateStr === "object" ? dateStr : new Date(dateStr);
+      return {
+        date: dateObj.getDate(),
+        month: dateObj.getMonth() + 1,
+        year: dateObj.getFullYear()
+      };
+    },
+    handleCurrentChange(newPage) {
+      blog.getBlogsByUserId(this.user.id, { page: newPage }).then(response => {
+        this.blogs = response.data;
+        this.page = response.page;
+        this.total = response.total;
+        this.$router.push({
+          path: `/my`,
+          query: { page: newPage }
+        });
+      });
+    },
+    deleteHandle(blogId) {
+      console.log(blogId);
       this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
+      }).then(() => {
+        blog.deleteBlog({ blogId }).then(() => {
           this.$message({
             type: "success",
             message: "删除成功!"
           });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+          this.getData();
         });
-    },
-    editHandle() {
-      console.log(90);
+      });
     }
   }
 };
@@ -103,7 +138,7 @@ export default {
         display: block;
         color: $textLighterColor;
       }
-      .year {
+      .day {
         font-size: 40px;
       }
     }
@@ -122,5 +157,6 @@ export default {
 .pagination-container {
   display: grid;
   justify-items: center;
+  margin-bottom: 20px;
 }
 </style>

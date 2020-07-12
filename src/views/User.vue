@@ -131,5 +131,6 @@ export default {
 .pagination-container {
   display: grid;
   justify-items: center;
+  margin-bottom: 20px;
 }
 </style>
