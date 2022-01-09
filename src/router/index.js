@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import store from '../store'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import store from '../store';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -13,8 +13,8 @@ const routes = [
     path: '/create',
     component: () => import('@/views/Create.vue'),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/detail/:blogId',
@@ -24,8 +24,8 @@ const routes = [
     path: '/my',
     component: () => import('@/views/My.vue'),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/register',
@@ -43,29 +43,44 @@ const routes = [
     path: '/edit/:blogId',
     component: () => import('@/views/Edit.vue'),
     meta: {
-      requiresAuth: true
-    }
-  }
-]
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/userCenter',
+    component: () => import('@/views/UserCenter'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+];
 
 const router = new VueRouter({
-  routes
-})
+  routes,
+});
 
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}//作用为屏蔽错误
-
+  return originalPush.call(this, location).catch((err) => err);
+}; //作用为屏蔽错误
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => { return record.meta.requiresAuth })) {
-    store.dispatch('checkLogin').then(isLogin => {
-      if (!isLogin) {
-        next({ path: '/login', query: { redirect: to.fullPath } })
-      } else { next() }
+  if (
+    to.matched.some((record) => {
+      console.log(record.meta.requiresAuth);
+      return record.meta.requiresAuth;
     })
-  } else { next() }
-})
+  ) {
+    store.dispatch('checkLogin').then((isLogin) => {
+      if (!isLogin) {
+        next({ path: '/login', query: { redirect: to.fullPath } });
+      } else {
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+});
 
-export default router
+export default router;

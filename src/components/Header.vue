@@ -1,12 +1,12 @@
 <template>
-  <header :class="{login:isLogin,'un-login':!isLogin,isCheck:isCheck}">
+  <header :class="{ login: isLogin, 'un-login': !isLogin }">
     <template v-if="isLogin">
       <h1 @click="toIndex">Let's share!</h1>
       <div class="actions">
         <i @click="create" class="el-icon-plus edit"></i>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link pull-down-container">
-            <img class="avatar" :src="user.avatar" alt />
+            <img class="avatar" :src="user.avatar || '/avatar/default.png'" alt />
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user" command="my">我的</el-dropdown-item>
@@ -31,48 +31,38 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  data() {
-    return {
-      isCheck: true
-    };
-  },
   computed: {
-    ...mapGetters(["user", "isLogin"])
+    ...mapGetters(['user', 'isLogin']),
   },
   created() {
-    this.checkLogin().then(() => {
-      this.isCheck = false;
-    });
+    this.checkLogin();
   },
   methods: {
-    ...mapActions(["checkLogin", "logout"]),
+    ...mapActions(['checkLogin', 'logout']),
     handleCommand(command) {
-      if (command === "logout") {
+      if (command === 'logout') {
         this.logout().then(() => {
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: '/' });
         });
       }
-      if (command === "my") {
-        this.$router.push("/my");
+      if (command === 'my') {
+        this.$router.push('/my');
       }
     },
     create() {
-      this.$router.push("/create");
+      this.$router.push('/create');
     },
     toIndex() {
-      this.$router.push("/");
-    }
-  }
+      this.$router.push('/');
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/base.scss";
-header.isCheck {
-  visibility: hidden;
-}
+@import '@/assets/base.scss';
 header.un-login {
   background-color: $bgColor;
   display: grid;
